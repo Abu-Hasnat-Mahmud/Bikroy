@@ -1,9 +1,11 @@
 ﻿using Application.Interfaces;
 using Domain.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DAL;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,24 +32,19 @@ namespace Persistence.Repository
             await _dBContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Post>> Get() => await _dBContext.Post.ToListAsync();
+        public async Task<IEnumerable<Post>> Get() => await _dBContext.Post.Include(a => a.Tags).ToListAsync();
 
-        public async Task<Post> Get(int id) => await _dBContext.Post.FindAsync(id);
+        public async Task<Post> Get(int id) => await _dBContext.Post.Include(a => a.Tags).FirstOrDefaultAsync(a => a.PostId == id);
 
         public async Task<IEnumerable<Post>> GetUserPost(int userId)
-            => await _dBContext.Post.AsNoTracking().Where(a => a.UserId == userId).ToListAsync();
+            => await _dBContext.Post.Include(a => a.Tags).AsNoTracking().Where(a => a.UserId == userId).ToListAsync();
 
-        public async Task<IEnumerable<Post>> Get(string search)
+        public async Task<IEnumerable<Post>> Search(string search)
         {
-            string filter = $"%{search}%";
-            var data = await _dBContext.Post.AsNoTracking()
-                //.Include(a=>a.Tags)
-                .Where(a => EF.Functions.Like(a.ProductName, filter)
-                    //a.Tags.Select(c=> EF.Functions.Like(c.Name, filter))
-                    )
+            var param = new SqlParameter("@search", search);
 
-                .ToListAsync();
-            return data;
+            var posts = await _dBContext.Post.FromSqlRaw("EXEC [ProductSearch] @search", param).ToListAsync();
+            return posts;
         }
 
 

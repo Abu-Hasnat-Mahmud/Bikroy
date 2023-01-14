@@ -28,6 +28,7 @@ namespace Business
         public async Task<Post> Get(int id) => await _postRepository.Get(id);
 
         public async Task<IEnumerable<Post>> GetUserPost(int userId) => await _postRepository.GetUserPost(userId);
+        public async Task<IEnumerable<Post>> Search(string searchText) => await _postRepository.Search(searchText);
 
         public async Task<Post> Put(Post post)
         {
@@ -52,5 +53,6 @@ namespace Business
             return data;
         }
 
+        
     }
 }

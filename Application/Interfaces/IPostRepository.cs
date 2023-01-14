@@ -12,6 +12,7 @@ namespace Application.Interfaces
         public Task<IEnumerable<Post>> Get();
         public Task<Post> Get(int id);
         public Task<IEnumerable<Post>> GetUserPost(int userId);
+        public Task<IEnumerable<Post>> Search(string search);
         public Task Add(Post Post);
         public Task Put(Post Post);
         public Task Delete(Post Post);

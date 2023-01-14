@@ -3,12 +3,14 @@ using Business;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DAL;
 using Persistence.Repository;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 
 builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(AppConfig.DefaultConnection));
 

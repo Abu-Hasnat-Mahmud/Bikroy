@@ -35,11 +35,19 @@ namespace Bikroy.Controllers
             return Ok(post);
         }
 
-       
-        [HttpGet]
+
+        [HttpGet("GetUserPost")]
         public async Task<ActionResult<Post>> GetUserPost(int userId)
         {
             var post = await _PostBL.GetUserPost(userId);
+            return Ok(post);
+        }
+
+        
+        [HttpGet("Search")]
+        public async Task<ActionResult<Post>> Search(string searchText)
+        {
+            var post = await _PostBL.Search(searchText);
             return Ok(post);
         }
 
