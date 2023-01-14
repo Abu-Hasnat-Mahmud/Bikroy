@@ -14,7 +14,6 @@ namespace Domain.Models
         public int PostId { get; set; }
         public string ProductName { get; set; }
         public string Description { get; set; }
-
         public DateTime PostDate { get; set; }
 
         [ForeignKey("UserId")]
