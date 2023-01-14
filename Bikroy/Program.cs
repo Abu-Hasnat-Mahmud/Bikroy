@@ -1,5 +1,8 @@
+using Application.Interfaces;
+using Business;
 using Microsoft.EntityFrameworkCore;
 using Persistence.DAL;
+using Persistence.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +11,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(AppConfig.DefaultConnection));
+
+builder.Services.AddScoped<IUserBL, UserBL>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
