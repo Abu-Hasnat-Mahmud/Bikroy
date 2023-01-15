@@ -15,6 +15,8 @@ namespace Persistence.DAL
         public DbSet<User> User { get; set; }
         public DbSet<Post> Post { get; set; }
         public DbSet<Tags> Tags { get; set; }
+        public DbSet<Message> Message { get; set; }
+        public DbSet<MessageBlock> MessageBlock { get; set; }
 
     }
 }

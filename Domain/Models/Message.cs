@@ -8,21 +8,21 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    //public class Message
-    //{
-    //    [Key]
-    //    public int Id { get; set; }
+    public class Message
+    {
+        [Key]
+        public int MessageId { get; set; }
 
-    //    public string MessageText { get; set; }
+        public string MessageBody { get; set; }
 
-    //    [ForeignKey("UserId")]
-    //    public int SenderId { get; set; }
-    //    public virtual User Sender { get; set; }
+        [ForeignKey("UserId")]
+        public int SenderId { get; set; }
+        public virtual User Sender { get; set; }
 
-    //    [ForeignKey("UserId")]
-    //    public int ReceiverId { get; set; }
-    //    public virtual User Receiver { get; set; }
+        [ForeignKey("UserId")]
+        public int ReceiverId { get; set; }
+        public virtual User Receiver { get; set; }
 
-    //    public DateTime MessageDate { get; set; }
-    //}
+        public DateTime MessageDate { get; set; }
+    }
 }

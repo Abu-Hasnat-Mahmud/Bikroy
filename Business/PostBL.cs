@@ -34,6 +34,7 @@ namespace Business
         {
             var data = await _postRepository.Get(post.PostId);
             data.ProductName = post.ProductName;
+            data.Price = post.Price;
             data.Description = post.Description;
 
             await _postRepository.Put(data);

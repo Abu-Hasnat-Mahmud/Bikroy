@@ -17,12 +17,14 @@ builder.Services.AddDbContext<DBContext>(options => options.UseSqlServer(AppConf
 #region Buisness Logic
 builder.Services.AddScoped<IUserBL, UserBL>();
 builder.Services.AddScoped<IPostBL, PostBL>();
+builder.Services.AddScoped<IMessageBL, MessageBL>();
 #endregion
 
 #region Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IPostRepository, PostRepository>();
 builder.Services.AddScoped<ITagsRepository, TagsRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 #endregion
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
