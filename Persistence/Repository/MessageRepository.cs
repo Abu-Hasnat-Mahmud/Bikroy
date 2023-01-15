@@ -36,16 +36,9 @@ namespace Persistence.Repository
 
         public async Task<Message> Get(int id) => await _dBContext.Message.FirstOrDefaultAsync(a => a.MessageId == id);
 
-        public async Task<IEnumerable<Message>> GetUserMessage(int senderId, int receiverId)
-            => await _dBContext.Message.AsNoTracking().Where(a => a.SenderId == senderId && a.ReceiverId == receiverId).ToListAsync();
-
-        public async Task<IEnumerable<Message>> Search(string search)
-        {
-            var param = new SqlParameter("@search", search);
-
-            var Messages = await _dBContext.Message.FromSqlRaw("EXEC [ProductSearch] @search", param).ToListAsync();
-            return Messages;
-        }
+        public async Task<IEnumerable<Message>> GetUserConversation(int senderId, int receiverId)
+            => await _dBContext.Message.AsNoTracking().Where(a => (a.SenderId == senderId && a.ReceiverId == receiverId) || (a.SenderId == receiverId && a.ReceiverId == senderId)).ToListAsync();
+               
         public async Task Put(Message Message)
         {
             _dBContext.Message.Update(Message);

@@ -35,7 +35,7 @@ namespace Business
 
         public async Task<Message> Get(int id) => await _messageRepository.Get(id);
 
-        public async Task<IEnumerable<Message>> GetUserMessage(int senderId, int receiverId) => await _messageRepository.GetUserMessage(senderId, receiverId);
+        public async Task<IEnumerable<Message>> GetUserMessage(int senderId, int receiverId) => await _messageRepository.GetUserConversation(senderId, receiverId);
         
         public async Task<Message> Put(Message message)
         {

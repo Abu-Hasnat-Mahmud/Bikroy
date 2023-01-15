@@ -2,7 +2,6 @@
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Bikroy.Controllers
 {
@@ -16,25 +15,14 @@ namespace Bikroy.Controllers
             _messageBL = MessageBL;
         }
 
-        //// GET: api/<MessageController>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Message>>> Get()
-        //{
-        //    var Messages= await _messageBL.Get();
-        //    return Ok(Messages);
-        //}
+      
 
-        //// GET api/<MessageController>/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Message>> Get(int id)
-        //{
-        //    var Message = await _messageBL.Get(id);
-        //    if (Message == null)
-        //        return BadRequest("Message not found!");
-
-        //    return Ok(Message);
-        //}
-
+        /// <summary>
+        /// Get Conversation
+        /// </summary>
+        /// <param name="senderId"></param>
+        /// <param name="receiverId"></param>
+        /// <returns>Conversation between Buyer and Seller</returns>
 
         [HttpGet("GetUserMessage")]
         public async Task<ActionResult<Message>> GetUserMessage(int senderId, int receiverId)
@@ -52,7 +40,13 @@ namespace Bikroy.Controllers
 
 
 
-        // Message api/<MessageController>
+        /// <summary>
+        /// Send message between Seller and Buyer
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns>Newly create message</returns>
+        /// <response code="200">Returns the newly created message</response>
+        /// <response code="400">If the item is not create</response>
         [HttpPost("SendMessage")]
         public async Task<ActionResult> SendMessage(Message message)
         {
@@ -72,7 +66,11 @@ namespace Bikroy.Controllers
         }
 
 
-
+        /// <summary>
+        /// Block buyer
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         // Message api/<MessageController>
         [HttpPost("BlockUser")]
         public async Task<ActionResult> BlockUser(MessageBlock request)
@@ -89,29 +87,13 @@ namespace Bikroy.Controllers
             }
         }
 
+       
 
-
-
-
-        //// PUT api/<MessageController>/5
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult> Update(int id, [FromBody] Message request)
-        //{
-        //    try
-        //    {
-        //        if (id != request.MessageId)
-        //            return BadRequest();
-
-        //        var message = await _messageBL.Put(request);
-        //        return Ok(message);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //}
-
+        /// <summary>
+        /// Delete message
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // DELETE api/<MessageController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)

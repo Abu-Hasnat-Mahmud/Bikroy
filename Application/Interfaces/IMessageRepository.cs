@@ -11,7 +11,7 @@ namespace Application.Interfaces
     {
         public Task<IEnumerable<Message>> Get();
         public Task<Message> Get(int id);
-        public Task<IEnumerable<Message>> GetUserMessage(int senderId, int receiverId);       
+        public Task<IEnumerable<Message>> GetUserConversation(int senderId, int receiverId);       
         public Task Add(Message Message);
         public Task Put(Message Message);
         public Task Delete(Message Message);
