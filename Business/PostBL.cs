@@ -65,12 +65,11 @@ namespace Business
                 }
             }
 
-
             return data;
         }
 
 
-        // Not used Mapping package for simple API
+        // Not used Auto Mapping package for simple API
         private Post MappingPost(PostVM post)
         {
             if (post !=null)
