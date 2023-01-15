@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Models;
+using Domain.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,20 +13,32 @@ namespace Business
     public class MessageBL : IMessageBL
     {
         private readonly IMessageRepository _messageRepository;
-       
+
         public MessageBL(IMessageRepository MessageRepository)
         {
             _messageRepository = MessageRepository;
-           
+
         }
 
-        public async Task SendMessage(Message message)
+        public async Task<Message?> SendMessage(MessageVM message)
         {
             var isBlock = await _messageRepository.CheckBlockList(message.SenderId, message.ReceiverId);
             if (!isBlock)
             {
-                await _messageRepository.Add(message);
-            }            
+                Message newMessage = new()
+                {
+                    SenderId = message.SenderId,
+                    ReceiverId = message.ReceiverId,
+                    PostId=message.PostId,
+                    MessageBody = message.MessageBody,
+                    MessageDate= message.MessageDate,
+                };
+
+                await _messageRepository.Add(newMessage);
+                return newMessage;
+            }
+
+            return null;
         }
 
 
@@ -36,13 +49,13 @@ namespace Business
         public async Task<Message> Get(int id) => await _messageRepository.Get(id);
 
         public async Task<IEnumerable<Message>> GetUserMessage(int senderId, int receiverId) => await _messageRepository.GetUserConversation(senderId, receiverId);
-        
+
         public async Task<Message> Put(Message message)
         {
             var data = await _messageRepository.Get(message.MessageId);
             data.MessageBody = message.MessageBody;
             //data.MessageDate = message.MessageDate;
-            await _messageRepository.Put(data);          
+            await _messageRepository.Put(data);
 
             return data;
         }

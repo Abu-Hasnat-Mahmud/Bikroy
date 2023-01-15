@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace Application.Interfaces
 {
     public interface IPostBL
     {
-        public Task<IEnumerable<Post>> Get();
-        public Task<Post> Get(int id);
-        public Task<IEnumerable<Post>> GetUserPost(int userId);
-        public Task<IEnumerable<Post>> Search(string searchText);
-        public Task Add(Post Post);
-        public Task<Post> Put(Post Post);
-        public Task Delete(Post Post);
+        Task<IEnumerable<Post>> Get();
+        Task<Post> Get(int id);
+        Task<IEnumerable<Post>> GetUserPost(int userId);
+        Task<IEnumerable<Post>> Search(string searchText);
+        Task<Post> Add(PostVM Post);
+        Task<Post> Put(PostVM Post);
+        Task Delete(Post Post);
     }
 }

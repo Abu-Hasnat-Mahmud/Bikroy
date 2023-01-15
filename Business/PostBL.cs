@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Models;
+using Domain.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,7 +20,14 @@ namespace Business
             _tagRepository = tagsRepository;
         }
 
-        public async Task Add(Post post) => await _postRepository.Add(post);
+        public async Task<Post> Add(PostVM post)
+        {
+            Post newPost = MappingPost(post);
+
+            await _postRepository.Add(newPost);
+            return newPost;
+        }
+
 
         public async Task Delete(Post post) => await _postRepository.Delete(post);
 
@@ -30,30 +38,68 @@ namespace Business
         public async Task<IEnumerable<Post>> GetUserPost(int userId) => await _postRepository.GetUserPost(userId);
         public async Task<IEnumerable<Post>> Search(string searchText) => await _postRepository.Search(searchText);
 
-        public async Task<Post> Put(Post post)
-        {
-            var data = await _postRepository.Get(post.PostId);
-            data.ProductName = post.ProductName;
-            data.Price = post.Price;
-            data.Description = post.Description;
+        public async Task<Post> Put(PostVM newPost)
+        {           
+            var data = await _postRepository.Get(newPost.PostId);
+
+            var post = MappingPost(newPost);
+
+            data.ProductName = post?.ProductName;
+            data.Price = post?.Price ?? 0;
+            data.Description = post?.Description;
 
             await _postRepository.Put(data);
 
-            foreach (var item in post.Tags)
+            if (post?.Tags != null)
             {
-                if (item.Id > 0)
+                foreach (var item in post.Tags)
                 {
-                    await _tagRepository.Put(item);
-                }
-                else
-                {
-                    await _tagRepository.Add(item);
+                    if (item.Id > 0)
+                    {
+                        await _tagRepository.Put(item);
+                    }
+                    else
+                    {
+                        await _tagRepository.Add(item);
+                    }
                 }
             }
+
 
             return data;
         }
 
-        
+
+        // Not used Mapping package for simple API
+        private Post MappingPost(PostVM post)
+        {
+            if (post !=null)
+            {
+                Post newPost = new()
+                {
+                    PostId = post.PostId,
+                    ProductName = post.ProductName,
+                    Price = post.Price,
+                    Description = post.Description,
+                    PostDate = post.PostDate,
+                    UserId = post.UserId,
+                    Tags = new List<Tags>(),
+                   
+                };
+
+                foreach (var item in post.Tags)
+                {
+                    Tags tags = new() { Id= item.Id, Name= item.Name, PostId=item.PostId,  };
+                    newPost.Tags.Add(tags);                
+                }
+
+
+                return newPost;
+            }
+
+            return null;
+        }
+
+
     }
 }

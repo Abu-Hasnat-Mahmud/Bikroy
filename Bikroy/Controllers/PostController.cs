@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Models;
+using Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -24,7 +25,7 @@ namespace Bikroy.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Post>>> Get()
         {
-            var posts= await _postBL.Get();
+            var posts = await _postBL.Get();
             return Ok(posts);
         }
 
@@ -58,7 +59,7 @@ namespace Bikroy.Controllers
             return Ok(post);
         }
 
-        
+
         /// <summary>
         /// Search post by product name and tags
         /// </summary>
@@ -79,17 +80,17 @@ namespace Bikroy.Controllers
         /// <returns>Return newly created post.</returns>
         // POST api/<PostController>
         [HttpPost]
-        public async Task<ActionResult> AddPost(Post post)
+        public async Task<ActionResult> AddPost(PostVM post)
         {
             try
             {
-                await _postBL.Add(post);
-                return Ok(post);
+                var newPost = await _postBL.Add(post);
+                return Ok(newPost);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
-            }           
+            }
         }
 
 
@@ -102,21 +103,21 @@ namespace Bikroy.Controllers
 
         // PUT api/<PostController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, [FromBody] Post request)
+        public async Task<ActionResult> Update(int id, [FromBody] PostVM request)
         {
             try
             {
                 if (id != request.PostId)
                     return BadRequest();
 
-                var Post = await _postBL.Put(request);
-                return Ok(Post);
+                var post = await _postBL.Put(request);
+                return Ok(post);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           
+
         }
 
 
@@ -144,7 +145,7 @@ namespace Bikroy.Controllers
             {
                 return BadRequest(ex.Message); ;
             }
-            
+
         }
     }
 }

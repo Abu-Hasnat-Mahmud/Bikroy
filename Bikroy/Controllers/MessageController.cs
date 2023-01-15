@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces;
 using Domain.Models;
+using Domain.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -15,7 +16,7 @@ namespace Bikroy.Controllers
             _messageBL = MessageBL;
         }
 
-      
+
 
         /// <summary>
         /// Get Conversation
@@ -46,18 +47,18 @@ namespace Bikroy.Controllers
         /// <param name="message"></param>
         /// <returns>Newly create message</returns>
         /// <response code="200">Returns the newly created message</response>
-        /// <response code="400">If the item is not create</response>
+        /// <response code="400">If the message not send.</response>
         [HttpPost("SendMessage")]
-        public async Task<ActionResult> SendMessage(Message message)
+        public async Task<ActionResult> SendMessage(MessageVM message)
         {
             try
             {
-                await _messageBL.SendMessage(message);
+                var msg = await _messageBL.SendMessage(message);
 
-                if (message.MessageId < 1)
-                    return BadRequest("The message not sent!!");
+                if (msg == null)
+                    return BadRequest("The message not send!!");
 
-                return Ok(message);
+                return Ok(msg);
             }
             catch (Exception ex)
             {
@@ -78,7 +79,7 @@ namespace Bikroy.Controllers
             try
             {
                 await _messageBL.AddToBlockList(request);
-                
+
                 return Ok(request);
             }
             catch (Exception ex)
@@ -87,7 +88,7 @@ namespace Bikroy.Controllers
             }
         }
 
-       
+
 
         /// <summary>
         /// Delete message
